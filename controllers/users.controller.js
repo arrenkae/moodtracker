@@ -6,7 +6,7 @@ export const getUsers = (req, res) => {
         res.status(200).json(data);
     })
     .catch(err => {
-        res.status(404).send('No users found');
+        res.status(404).json({ msg: err.message });
     })
 }
 
