@@ -45,6 +45,7 @@ button {
     background-color: #ffd803;
     font-family: 'Poppins', sans-serif;
     box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 button:hover {
@@ -99,7 +100,13 @@ button:hover {
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
     box-shadow: 2px 4px 4px rgba(15, 31, 50, 0.4);
     border: 1px solid rgba(0,0,0, 0.12);
+    cursor: pointer;
     float: left;
+}
+
+.box:hover {
+    transition: transform .2s;
+    transform: scale(1.2);
 }
 
 .feedback {
