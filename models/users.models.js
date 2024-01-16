@@ -17,5 +17,5 @@ export const _getUserById = (userId) => {
 };
 
 export const _deleteUser = (userId) => {
-    return db('moodtracker_users').del().where({ id: userId }).returning('*');
+    return db('moodtracker_users').del().where({ id: userId }).returning('*'); // entries database references user database; if the user has any entries, they need to be deleted first
 }
