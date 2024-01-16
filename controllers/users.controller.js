@@ -3,7 +3,11 @@ import { _getUsers, _newUser, _getUserByName, _getUserById, _deleteUser } from '
 export const getUsers = (req, res) => {
     _getUsers()
     .then(data => {
-        res.status(200).json(data);
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'No users' });
+        }
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });
@@ -55,7 +59,7 @@ export const deleteUser = (req, res) => {
     const {id} = req.params;
     _deleteUser(id)
     .then(data => {
-        res.json(data);
+        res.status(200).json(data);
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });

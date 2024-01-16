@@ -3,6 +3,7 @@ let username;
 let todayDate;
 let currentDate;
 
+// automatically logins as a new user after creating it and adding to the database
 const newUser = async() => {
     username = document.getElementById('username').value;
     try {
@@ -37,9 +38,9 @@ const login = async() => {
         } else {
             const data = await response.json();
             userId = data[0].id;
-            todayDate = new Date();
+            todayDate = new Date(); // storing today's date in case we need to return to it after switching
             currentDate = todayDate;
-            document.getElementById('login').style.display = "none";
+            document.getElementById('login').style.display = "none"; // hides login form and displays tracker
             document.getElementById('root').style.display = "block";
             await showDay(currentDate);
             await showRecent();
@@ -50,6 +51,7 @@ const login = async() => {
     }
 }
 
+// timed feedback message
 const showFeedback = (elementId, message) => {
     const feedback = document.getElementById(elementId);
     feedback.style.display = "inline";
@@ -57,11 +59,12 @@ const showFeedback = (elementId, message) => {
     setTimeout(() => { feedback.style.display = "none" }, 2000);
 }
 
-const showDay = async(date) => {
+// initialized for today's date immediately after login but also used to switch entries for different dates
+const showDay = async(date) => { 
     document.getElementById('today').innerText = date.toDateString();
     try {
-        const dateFormatted = date.toJSON().slice(0, 10);
-        const response = await fetch(`/entries/${userId}/${dateFormatted}`);
+        const dateFormatted = date.toJSON().slice(0, 10); // formates date to the format used in the database
+        const response = await fetch(`/entries/${userId}/${dateFormatted}`); // tries to get entry for the specified date
         const data = await response.json();
         const activitiyChoices = document.getElementsByName("activity");
         if (data.length > 0) {
@@ -77,7 +80,7 @@ const showDay = async(date) => {
                 }
             }
         } else {
-            document.getElementById(`mood3`).checked = true;
+            document.getElementById(`mood3`).checked = true; // if no entry is found, displays default values
             document.getElementById('stress').value = 3;
             for (checkbox of activitiyChoices) {
                     checkbox.checked = false;
@@ -89,6 +92,7 @@ const showDay = async(date) => {
     }
 }
 
+// creates new elements for the recent entries (up to 7 days) including today (if saved), elements can be clicked to switch and edit entries
 const showRecent = async() => {
     try {
         const response = await fetch(`/entries/${userId}/recent/`);
@@ -99,7 +103,7 @@ const showRecent = async() => {
                 const date = new Date(entry.created_on);
                 const moodemoji = document.getElementById(`moodemoji${entry.mood_level}`).innerText;
                 let color;
-                switch (entry.stress_level) {
+                switch (entry.stress_level) { // changes color of the circle depending on the stress level
                     case 1:
                         color = '#8bd3dd';
                         break;
@@ -129,8 +133,9 @@ const showRecent = async() => {
     }
 }
 
+// creates a new entry or updates if an entry for this day already exists
 const saveEntry = async() => {
-    const date = currentDate.toISOString().slice(0, 10);
+    const date = currentDate.toISOString().slice(0, 10); // formates date to the format used in the database
     const activitiyChoices = document.querySelectorAll('input[type=checkbox]:checked');
     let activities = [];
     if (activitiyChoices) {
@@ -169,7 +174,7 @@ const saveEntry = async() => {
 const switchDay = async(entryId) => {
     if (document.getElementsByClassName('date-past')[0].innerText != todayDate.toDateString()) {
         saveEntry();
-    }
+    } // if an entry for today doesn't exist, creates it so that the user can switch back
     try {
         const response = await fetch(`/entries/${entryId}`);
         const data = await response.json();

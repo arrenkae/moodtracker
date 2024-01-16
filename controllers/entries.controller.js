@@ -4,7 +4,11 @@ export const getAllEntries = (req, res) => {
     const {userId} = req.params;
     _getAllEntries(userId)
     .then(data => {
-        res.status(200).json(data);
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'No entries for this user' });
+        }
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });
@@ -15,7 +19,11 @@ export const getEntryById = (req, res) => {
     const {id} = req.params;
     _getEntryById(id)
     .then(data => {
-        res.status(200).json(data);
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'Entry not found' });
+        }
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });
@@ -26,7 +34,11 @@ export const getEntryByDate = (req, res) => {
     const {userId, date} = req.params;
     _getEntryByDate(userId, date)
     .then(data => {
-        res.status(200).json(data);
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'Entry not found' });
+        }
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });
@@ -37,7 +49,11 @@ export const getRecentEntries = (req, res) => {
     const {userId} = req.params;
     _getRecentEntries(userId)
     .then(data => {
-        res.status(200).json(data);
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'No entries for this user' });
+        }
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });
@@ -45,7 +61,7 @@ export const getRecentEntries = (req, res) => {
 }
 
 export const saveEntry = (req, res) => {
-    const { userId, mood, stress, activities, date } = req.body;
+    const { userId, mood, stress, activities, date } = req.body; // script.js provides current date in a string format
     _saveEntry( userId, mood, stress, activities, date )
     .then(data => {
         res.status(201).json(data);
@@ -59,7 +75,7 @@ export const deleteEntry = (req, res) => {
     const {id} = req.params;
     _deleteEntry(id)
     .then(data => {
-        res.json(data);
+        res.status(200).json(data);
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });
