@@ -20,7 +20,7 @@ export const _saveEntry = (userId, mood, stress, activities, date ) => {
         activities,
         created_on: date
     })
-    .onConflict('created_on')
+    .onConflict(['user_id', 'created_on'])
     .merge()
     .returning('*');
 }

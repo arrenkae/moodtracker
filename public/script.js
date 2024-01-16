@@ -1,8 +1,10 @@
 let userId;
+let username;
+let todayDate;
 let currentDate;
 
 const newUser = async() => {
-    const username = document.getElementById('username').value;
+    username = document.getElementById('username').value;
     try {
         const response = await fetch('/users', {
             method: 'POST',
@@ -13,6 +15,7 @@ const newUser = async() => {
             })
         if (response.status === 404) {
             document.getElementById('username').value = '';
+            username = '';
             showFeedback('feedback_login', 'User already exists');
         } else {
             await login();
@@ -23,16 +26,18 @@ const newUser = async() => {
 }
 
 const login = async() => {
-    const username = document.getElementById('username').value;
+    username = document.getElementById('username').value;
     try {
         const response = await fetch(`/users/name/${username}`);
         if (response.status === 404) {
             document.getElementById('username').value = '';
+            username = '';
             showFeedback('feedback_login', 'User not found');
         } else {
             const data = await response.json();
             userId = data[0].id;
-            currentDate = new Date();
+            todayDate = new Date();
+            currentDate = todayDate;
             document.getElementById('login').style.display = "none";
             document.getElementById('root').style.display = "block";
             await showDay(currentDate);
@@ -61,7 +66,7 @@ const showDay = async(date) => {
         if (data.length > 0) {
             document.getElementById(`mood${data[0].mood_level}`).checked = true;
             document.getElementById('stress').value = data[0].stress_level;
-            if (data[0].activities.length > 0) {
+            if (data[0].activities) {
                 for (checkbox of activitiyChoices) {
                     if (data[0].activities.includes(checkbox.value)) {
                         checkbox.checked = true;
@@ -110,8 +115,11 @@ const showRecent = async() => {
                         color = '#f25f4c';
                         break;
                 }
-                let activities = entry.activities.join(' ');
-                html += `<div class='past_entry'><h5>${date.toDateString()}</h5><div class="box" style="background-color: ${color}" onclick="switchDay(${entry.id})">${moodemoji}</div>${activities}</div>`;
+                let activities = '';
+                if (entry.activities) {
+                    activities = entry.activities.join(' ');
+                }
+                html += `<div class='past_entry'><h5 class='date-past'>${date.toDateString()}</h5><div class="box" style="background-color: ${color}" onclick="switchDay(${entry.id})">${moodemoji}</div>${activities}</div>`;
             }
         document.getElementById('past').innerHTML = html;
         }
@@ -121,11 +129,13 @@ const showRecent = async() => {
 }
 
 const saveEntry = async() => {
-    const date = currentDate.toISOString().slice(0, 10)
-    const activitiyChoices = document.querySelectorAll('input[type=checkbox]:checked')
+    const date = currentDate.toISOString().slice(0, 10);
+    const activitiyChoices = document.querySelectorAll('input[type=checkbox]:checked');
     let activities = [];
-    for (checkbox of activitiyChoices) {
-        activities.push(checkbox.value);
+    if (activitiyChoices) {
+        for (checkbox of activitiyChoices) {
+            activities.push(checkbox.value);
+        }
     }
     const stress = document.getElementById('stress').value;
     const moodChoices = document.querySelectorAll('input[name=mood]');
@@ -156,6 +166,9 @@ const saveEntry = async() => {
 }
 
 const switchDay = async(entryId) => {
+    if (document.getElementsByClassName('date-past')[0].innerText != todayDate.toDateString()) {
+        saveEntry();
+    }
     try {
         const response = await fetch(`/entries/${entryId}`);
         const data = await response.json();

@@ -35,7 +35,7 @@ export const getRecentEntries = (req, res) => {
 
 export const saveEntry = (req, res) => {
     const { userId, mood, stress, activities, date } = req.body;
-    _saveEntry(userId, mood, stress, activities, date )
+    _saveEntry( userId, mood, stress, activities, date )
     .then(data => {
         res.status(201).json(data);
     })
