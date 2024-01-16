@@ -16,7 +16,7 @@
     <div id="login">
         <input type="text" id="username" placeholder="Your name">
         <button id="existing_user" onclick="login()">Existing user</button>
-        <button id="new_user" onclick="newUser()">New user</button><span id="feedback_login"></span>
+        <button id="new_user" onclick="newUser()">New user</button><span class="feedback" id="feedback_login"></span>
     </div>
     <div id="root" style="display: none;">
         <h1 id="today"></h1>
@@ -45,7 +45,7 @@
             <input type='checkbox' name='activity' value='🐶'><span class='activity_text'>🐶 My pet</span>
             <input type='checkbox' name='activity' value='❤️'><span class='activity_text'>❤️ Loved ones</span>
         </div>
-        <button id="save" onclick="saveEntry()">Save</button><span id="feedback"></span>
+        <button id="save" onclick="saveEntry()">Save</button><span class="feedback" id="feedback_save"></span>
         <div id="past"></div>
     </div>
     <script src="script.js"></script>

@@ -15,3 +15,7 @@ export const _getUserByName = (username) => {
 export const _getUserById = (userId) => {
     return db('moodtracker_users').select('*').where({ id: userId });
 };
+
+export const _deleteUser = (userId) => {
+    return db('moodtracker_users').del().where({ id: userId }).returning('*');
+}

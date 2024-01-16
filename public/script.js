@@ -21,6 +21,7 @@ const newUser = async() => {
             await login();
         }
     } catch (error) {
+        showFeedback('feedback_login', 'Something went wrong');
         console.log(error);
     }
 }
@@ -155,9 +156,9 @@ const saveEntry = async() => {
             body: JSON.stringify({ userId, mood, stress, activities, date })
         })
         if (response.status === 404) {
-            showFeedback('feedback', 'Unable to save');
+            showFeedback('feedback_save', 'Unable to save');
         } else {
-            showFeedback('feedback', 'Saved successfully!');
+            showFeedback('feedback_save', 'Saved successfully!');
             await showRecent();
         }
     } catch (error) {

@@ -1,4 +1,15 @@
-import { _saveEntry, _getEntryById, _getEntryByDate, _getRecentEntries } from '../models/entries.models.js';
+import { _getAllEntries, _getEntryById, _getEntryByDate, _getRecentEntries, _saveEntry, _deleteEntry } from '../models/entries.models.js';
+
+export const getAllEntries = (req, res) => {
+    const {userId} = req.params;
+    _getAllEntries(userId)
+    .then(data => {
+        res.status(200).json(data);
+    })
+    .catch(err => {
+        res.status(404).json({ msg: err.message });
+    })
+}
 
 export const getEntryById = (req, res) => {
     const {id} = req.params;
@@ -38,6 +49,17 @@ export const saveEntry = (req, res) => {
     _saveEntry( userId, mood, stress, activities, date )
     .then(data => {
         res.status(201).json(data);
+    })
+    .catch(err => {
+        res.status(404).json({ msg: err.message });
+    })
+}
+
+export const deleteEntry = (req, res) => {
+    const {id} = req.params;
+    _deleteEntry(id)
+    .then(data => {
+        res.json(data);
     })
     .catch(err => {
         res.status(404).json({ msg: err.message });

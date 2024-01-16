@@ -1,4 +1,4 @@
-import { _getUsers, _newUser, _getUserByName, _getUserById } from '../models/users.models.js';
+import { _getUsers, _newUser, _getUserByName, _getUserById, _deleteUser } from '../models/users.models.js';
 
 export const getUsers = (req, res) => {
     _getUsers()
@@ -50,3 +50,14 @@ export const getUserByName = (req, res) => {
         res.status(404).json({ msg: err.message });
     })
 };
+
+export const deleteUser = (req, res) => {
+    const {id} = req.params;
+    _deleteUser(id)
+    .then(data => {
+        res.json(data);
+    })
+    .catch(err => {
+        res.status(404).json({ msg: err.message });
+    })
+}

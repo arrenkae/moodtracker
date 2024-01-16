@@ -1,5 +1,9 @@
 import { db } from '../config/db.js';
 
+export const _getAllEntries = (userId) => {
+    return db('moodtracker_entries').select('*').where({ user_id: userId });
+}
+
 export const _getEntryById = (entryId) => {
     return db('moodtracker_entries').select('*').where({ id: entryId });
 }
@@ -23,4 +27,8 @@ export const _saveEntry = (userId, mood, stress, activities, date ) => {
     .onConflict(['user_id', 'created_on'])
     .merge()
     .returning('*');
+}
+
+export const _deleteEntry = (entryId) => {
+    return db('moodtracker_entries').del().where({ id: entryId }).returning('*');
 }
