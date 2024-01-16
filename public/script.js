@@ -1,9 +1,10 @@
 let userId;
+let currentDate;
 
 const newUser = async() => {
     const username = document.getElementById('username').value;
     try {
-        const response = await fetch('http://localhost:5000/users', {
+        const response = await fetch('/users', {
             method: 'POST',
             headers: {
                 'Content-type':'application/json',
@@ -24,19 +25,21 @@ const newUser = async() => {
 const login = async() => {
     const username = document.getElementById('username').value;
     try {
-        const response = await fetch(`http://localhost:5000/users/name/${username}`);
+        const response = await fetch(`/users/name/${username}`);
         if (response.status === 404) {
             document.getElementById('username').value = '';
             showFeedback('feedback_login', 'User not found');
         } else {
             const data = await response.json();
             userId = data[0].id;
+            currentDate = new Date();
             document.getElementById('login').style.display = "none";
             document.getElementById('root').style.display = "block";
-            await showToday();
+            await showDay(currentDate);
             await showRecent();
         }
     } catch (error) {
+        showFeedback('feedback_login', 'Something went wrong');
         console.log(error);
     }
 }
@@ -48,10 +51,11 @@ const showFeedback = (elementId, message) => {
     setTimeout(() => { feedback.style.display = "none" }, 2000);
 }
 
-const showToday = async() => {
-    document.getElementById('today').innerText = new Date().toDateString();
+const showDay = async(date) => {
+    document.getElementById('today').innerText = date.toDateString();
     try {
-        const response = await fetch(`http://localhost:5000/entries/${userId}/today`);
+        const dateFormatted = date.toJSON().slice(0, 10);
+        const response = await fetch(`/entries/${userId}/${dateFormatted}`);
         const data = await response.json();
         const activitiyChoices = document.getElementsByName("activity");
         if (data.length > 0) {
@@ -61,6 +65,8 @@ const showToday = async() => {
                 for (checkbox of activitiyChoices) {
                     if (data[0].activities.includes(checkbox.value)) {
                         checkbox.checked = true;
+                    } else {
+                        checkbox.checked = false;
                     }
                 }
             }
@@ -79,12 +85,12 @@ const showToday = async() => {
 
 const showRecent = async() => {
     try {
-        const response = await fetch(`http://localhost:5000/entries/${userId}/recent`);
+        const response = await fetch(`/entries/${userId}/recent/`);
         const data = await response.json();
         if (data.length > 0) {
             let html = '';
             for (entry of data) {
-                const date = new Date(entry.created_on).toDateString();
+                const date = new Date(entry.created_on);
                 const moodemoji = document.getElementById(`moodemoji${entry.mood_level}`).innerText;
                 let color;
                 switch (entry.stress_level) {
@@ -105,7 +111,7 @@ const showRecent = async() => {
                         break;
                 }
                 let activities = entry.activities.join(' ');
-                html += `<div class='past_entry'><h5>${date}</h5><div class="box" style="width: 30px; height: 30px; background-color: ${color}">${moodemoji}</div>${activities}</div>`;
+                html += `<div class='past_entry'><h5>${date.toDateString()}</h5><div class="box" style="background-color: ${color}" onclick="switchDay(${entry.id})">${moodemoji}</div>${activities}</div>`;
             }
         document.getElementById('past').innerHTML = html;
         }
@@ -115,6 +121,7 @@ const showRecent = async() => {
 }
 
 const saveEntry = async() => {
+    const date = currentDate.toISOString().slice(0, 10)
     const activitiyChoices = document.querySelectorAll('input[type=checkbox]:checked')
     let activities = [];
     for (checkbox of activitiyChoices) {
@@ -130,12 +137,12 @@ const saveEntry = async() => {
         }
     }
     try {
-        const response = await fetch('http://localhost:5000/entries', {
+        const response = await fetch('/entries', {
             method: 'POST',
             headers: {
                 'Content-type':'application/json',
             },
-            body: JSON.stringify({ userId, mood, stress, activities })
+            body: JSON.stringify({ userId, mood, stress, activities, date })
         })
         if (response.status === 404) {
             showFeedback('feedback', 'Unable to save');
@@ -143,6 +150,17 @@ const saveEntry = async() => {
             showFeedback('feedback', 'Saved successfully!');
             await showRecent();
         }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const switchDay = async(entryId) => {
+    try {
+        const response = await fetch(`/entries/${entryId}`);
+        const data = await response.json();
+        currentDate = new Date(data[0].created_on);
+        await showDay(currentDate);
     } catch (error) {
         console.log(error);
     }

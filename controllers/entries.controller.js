@@ -1,8 +1,8 @@
-import { _saveEntry, _getEntriesForUser, _getEntryToday, _getRecentEntries } from '../models/entries.models.js';
+import { _saveEntry, _getEntryById, _getEntryByDate, _getRecentEntries } from '../models/entries.models.js';
 
-export const getEntriesForUser = (req, res) => {
-    const {userId} = req.params;
-    _getEntriesForUser(userId)
+export const getEntryById = (req, res) => {
+    const {id} = req.params;
+    _getEntryById(id)
     .then(data => {
         res.status(200).json(data);
     })
@@ -11,9 +11,9 @@ export const getEntriesForUser = (req, res) => {
     })
 }
 
-export const getEntryToday = (req, res) => {
-    const {userId} = req.params;
-    _getEntryToday(userId)
+export const getEntryByDate = (req, res) => {
+    const {userId, date} = req.params;
+    _getEntryByDate(userId, date)
     .then(data => {
         res.status(200).json(data);
     })
@@ -34,8 +34,8 @@ export const getRecentEntries = (req, res) => {
 }
 
 export const saveEntry = (req, res) => {
-    const { userId, mood, stress, activities } = req.body;
-    _saveEntry(userId, mood, stress, activities)
+    const { userId, mood, stress, activities, date } = req.body;
+    _saveEntry(userId, mood, stress, activities, date )
     .then(data => {
         res.status(201).json(data);
     })

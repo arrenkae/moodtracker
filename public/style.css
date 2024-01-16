@@ -4,6 +4,7 @@
 
 body {
     margin-left: 40px;
+    margin-bottom: 20px;
     background-color: #fffffe;
     font-family: 'Montserrat', sans-serif;
     color: #2d334a;
@@ -70,6 +71,10 @@ button:hover {
     margin-bottom: 10px;
 }
 
+#activities h4 {
+    margin-bottom: 10px;
+}
+
 .activity_text {
     margin-left: 5px;
     margin-right: 7px;
@@ -88,6 +93,8 @@ button:hover {
 }
 
 .box {
+    width: 35px;
+    height: 35px; 
     border-radius: 50%;
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
     box-shadow: 2px 4px 4px rgba(15, 31, 50, 0.4);
