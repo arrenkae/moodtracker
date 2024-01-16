@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+}
+
+body {
+    margin-left: 40px;
+    background-color: #fffffe;
+    font-family: 'Montserrat', sans-serif;
+    color: #2d334a;
+}
+
+header h1 {
+    margin-top: 30px;
+    font-family: 'Amatic SC', sans-serif;
+    font-size: 5em;
+    color: #ff8906;
+}
+
+#login {
+    margin-top: 30px;
+}
+
+#login input {
+    width: 270px;
+    height: 30px;
+    padding-left: 7px;
+    margin-right: 5px;
+    border: 2px solid rgba(0,0,0, 0.12);
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#login input:focus {
+    outline: none;
+    border: 2px solid rgba(0, 0, 0, 0.377);
+}
+
+button {
+    width: 120px;
+    height: 35px;
+    margin-right: 5px;
+    border: none;
+    color: #272343;
+    background-color: #ffd803;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+
+#root {
+    margin-top: 30px;
+    width: 800px;
+    line-height: 2;
+}
+
+#root label {
+   margin-right: 5px;
+}
+
+#root input[type="range"] {
+    width: 300px;
+}
+
+#activities  {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.activity_text {
+    margin-left: 5px;
+    margin-right: 7px;
+}
+
+.past_entry {
+    width: 200px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.past_entry {
+    width: 200px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.box {
+    border-radius: 50%;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 2px 4px 4px rgba(15, 31, 50, 0.4);
+    border: 1px solid rgba(0,0,0, 0.12);
+    float: left;
+}

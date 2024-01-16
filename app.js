@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import { users_router } from './routes/users.routes.js';
-import { activities_router } from './routes/activities.routes.js';
+// import { activities_router } from './routes/activities.routes.js';
 import { entries_router } from './routes/entries.routes.js';
 
 dotenv.config();
@@ -20,5 +20,5 @@ app.listen(process.env.PORT || 3000, () => {
 app.use('/', express.static(__dirname + '/public'));
 
 app.use('/users', users_router);
-app.use('/activities', activities_router);
+// app.use('/activities', activities_router);
 app.use('/entries', entries_router);
