@@ -1,6 +1,10 @@
 import { db } from '../config/db.js';
 
 export const _getAllEntries = (userId) => {
+    return db('moodtracker_entries').select('*');
+}
+
+export const _getAllUserEntries = (userId) => {
     return db('moodtracker_entries').select('*').where({ user_id: userId });
 }
 

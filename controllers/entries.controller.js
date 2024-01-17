@@ -1,8 +1,22 @@
-import { _getAllEntries, _getEntryById, _getEntryByDate, _getRecentEntries, _saveEntry, _deleteEntry } from '../models/entries.models.js';
+import { _getAllEntries, _getAllUserEntries, _getEntryById, _getEntryByDate, _getRecentEntries, _saveEntry, _deleteEntry } from '../models/entries.models.js';
 
 export const getAllEntries = (req, res) => {
+    _getAllEntries()
+    .then(data => {
+        if (data.length > 0) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ msg: 'No entries found' });
+        }
+    })
+    .catch(err => {
+        res.status(404).json({ msg: err.message });
+    })
+}
+
+export const getAllUserEntries = (req, res) => {
     const {userId} = req.params;
-    _getAllEntries(userId)
+    _getAllUserEntries(userId)
     .then(data => {
         if (data.length > 0) {
             res.status(200).json(data);
