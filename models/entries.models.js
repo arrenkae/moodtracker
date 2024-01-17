@@ -28,7 +28,7 @@ export const _saveEntry = (userId, mood, stress, activities, date ) => {
         activities,
         created_on: date
     })
-    .onConflict(['user_id', 'created_on']) // entries database allows only one entry per date per user; if an entry for this day already exists, it is updated
+    .onConflict(['user_id', 'created_on']) // entries table allows only one entry per date per user; if an entry for this day already exists, it is updated
     .merge()
     .returning('*');
 }
