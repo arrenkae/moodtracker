@@ -16,6 +16,7 @@ export const _getUserById = (userId) => {
     return db('moodtracker_users').select('*').where({ id: userId });
 };
 
+// entries database references user database and set to cascade on delete; deleting a user deletes their entries as well
 export const _deleteUser = (userId) => {
-    return db('moodtracker_users').del().where({ id: userId }).returning('*'); // entries database references user database; if the user has any entries, they need to be deleted first
+    return db('moodtracker_users').del().where({ id: userId }).returning('*');
 }
