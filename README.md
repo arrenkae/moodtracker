@@ -2,7 +2,7 @@
 
 A web app to log your mood and stress levels for any given day, as well as things that made you feel better.
 
-- Uses node.js server and remote PostgreSQL databases to store users and entries
+- Uses node.js server and remote PostgreSQL database to store users and entries
 - Database and connection data provided locally
 - One entry per day: if you already logged the current day, the data is displayed as the default inputs and can be changed
 - Tracker data is displayed for the past 7 days and can be edited by clicking the corresponding mood circles
